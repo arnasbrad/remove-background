@@ -51,6 +51,10 @@ python3 --version
 
 ## 2. Set up the project
 
+> **Important:** put the project in a folder path **without spaces**
+> (e.g. `~/remove-background`, not `~/Desktop/untitled folder/...`) —
+> Python virtual environments break in paths containing spaces.
+
 ```bash
 git clone https://github.com/arnasbrad/remove-background.git
 cd remove-background
@@ -63,7 +67,7 @@ python3 -m venv .venv       # Linux
 .venv/bin/python --version
 
 # install dependencies into it
-.venv/bin/pip install "rembg[cli,cpu]" gradio
+.venv/bin/python -m pip install "rembg[cli,cpu]" gradio
 ```
 
 > **Note:** the first time you process a photo, rembg downloads the AI model
@@ -112,4 +116,5 @@ Edge modes (GUI dropdown; the CLI script uses decontaminate):
 - **`rembg: command not found`** — you're outside the venv; use `.venv/bin/rembg`, or `source .venv/bin/activate` first.
 - **Slow processing** — birefnet on CPU takes a few seconds per photo; try `u2net` for speed.
 - **`ImportError: cannot import name 'HfFolder'`** — your venv was created with an old Python (usually macOS system 3.9; the error path shows `python3.9`). Install Python 3.13 (see step 1), then rebuild the venv with the versioned command:
-  `rm -rf .venv && python3.13 -m venv .venv && .venv/bin/pip install "rembg[cli,cpu]" gradio`
+  `rm -rf .venv && python3.13 -m venv .venv && .venv/bin/python -m pip install "rembg[cli,cpu]" gradio`
+- **venv creation fails (`ensurepip ... returned non-zero exit status`) or pip/gradio mysteriously "not found"** — check the project path for spaces (`untitled folder`, `My Stuff`, ...). Move the project to a space-free path like `~/remove-background`, delete `.venv`, and start over from step 2.
