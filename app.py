@@ -5,6 +5,15 @@ Then open the URL it prints (usually http://127.0.0.1:7860).
 Drag in one or more photos, hit Remove backgrounds, download the results.
 """
 
+import sys
+
+if sys.version_info < (3, 10):
+    sys.exit(
+        f"This app needs Python 3.10 or newer; you are running {sys.version.split()[0]}.\n"
+        "On macOS: brew install python, then recreate the venv with the new python3\n"
+        "(see the README for the exact commands)."
+    )
+
 import tempfile
 import zipfile
 from pathlib import Path

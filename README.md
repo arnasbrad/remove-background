@@ -36,6 +36,11 @@ Check it worked (use `python3` everywhere below):
 python3 --version
 ```
 
+> **macOS gotcha:** the Mac's built-in `python3` is often 3.9, which is too
+> old and installs broken dependency versions. If `python3 --version` says
+> 3.9.x, use the Homebrew one explicitly: `$(brew --prefix)/bin/python3`
+> (or restart your terminal after `brew install python`).
+
 `pip` ships with Python — inside the virtual environment below it is always available as `.venv/bin/pip`.
 
 ## 2. Set up the project
@@ -96,3 +101,5 @@ Edge modes (GUI dropdown; the CLI script uses decontaminate):
 
 - **`rembg: command not found`** — you're outside the venv; use `.venv/bin/rembg`, or `source .venv/bin/activate` first.
 - **Slow processing** — birefnet on CPU takes a few seconds per photo; try `u2net` for speed.
+- **`ImportError: cannot import name 'HfFolder'`** — your venv was created with an old Python (usually macOS system 3.9). Delete it and recreate with Python 3.10+:
+  `rm -rf .venv && $(brew --prefix)/bin/python3 -m venv .venv && .venv/bin/pip install "rembg[cli,cpu]" gradio`
