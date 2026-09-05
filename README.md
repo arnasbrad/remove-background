@@ -95,6 +95,19 @@ Your browser opens automatically (or go to the URL it prints, usually `http://12
 MODEL=u2net ./remove-bg.sh photo.jpg      # different model
 ```
 
+## Optional: a Desktop launcher (macOS)
+
+To start the GUI without opening Terminal:
+
+1. Open **Automator** → **File → New → Application**
+2. Add a **Run Shell Script** action and set its contents to (adjust the path if you cloned elsewhere):
+   ```bash
+   exec "$HOME/remove-background/.venv/bin/python" "$HOME/remove-background/app.py"
+   ```
+3. **File → Save** as `Background Remover` on your Desktop
+
+Double-click to launch — the browser opens by itself. While it runs, a spinning gear shows in the menu bar; stop it from there to shut the app down.
+
 ## Models and edge modes
 
 | Model | Good for | Size |
@@ -117,4 +130,12 @@ Edge modes (GUI dropdown; the CLI script uses decontaminate):
 - **Slow processing** — birefnet on CPU takes a few seconds per photo; try `u2net` for speed.
 - **`ImportError: cannot import name 'HfFolder'`** — your venv was created with an old Python (usually macOS system 3.9; the error path shows `python3.9`). Install Python 3.13 (see step 1), then rebuild the venv with the versioned command:
   `rm -rf .venv && python3.13 -m venv .venv && .venv/bin/python -m pip install "rembg[cli,cpu]" gradio`
+- **venv creation fails with an `ensurepip` error, or pip crashes with `ValueError: invalid literal for int() ... in _macos.py`** — on some macOS 26 systems Python misreports the OS version and pip's SSL setup crashes. Use [uv](https://docs.astral.sh/uv/) instead of pip:
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh   # then open a new terminal
+  rm -rf .venv
+  uv venv --python 3.13 .venv
+  uv pip install "rembg[cli,cpu]" gradio
+  .venv/bin/python app.py
+  ```
 - **venv creation fails (`ensurepip ... returned non-zero exit status`) or pip/gradio mysteriously "not found"** — check the project path for spaces (`untitled folder`, `My Stuff`, ...). Move the project to a space-free path like `~/remove-background`, delete `.venv`, and start over from step 2.
