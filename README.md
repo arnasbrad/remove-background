@@ -96,4 +96,3 @@ Edge modes (GUI dropdown; the CLI script uses decontaminate):
 
 - **`rembg: command not found`** — you're outside the venv; use `.venv/bin/rembg`, or `source .venv/bin/activate` first.
 - **Slow processing** — birefnet on CPU takes a few seconds per photo; try `u2net` for speed.
-- **Corporate pip policy errors** (`Invalid isoformat string: 'P7D'`) — set the guard to an explicit date: `PIP_UPLOADED_PRIOR_TO="$(date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)"` on macOS, or `date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ` on Linux.
