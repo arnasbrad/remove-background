@@ -15,10 +15,21 @@ You need **Python 3.10 or newer** (tested on 3.14).
 
 ```bash
 # with Homebrew (https://brew.sh)
-brew install python
+brew install python@3.13
 ```
 
-Or download the installer from [python.org/downloads](https://www.python.org/downloads/).
+Or, without Homebrew: download the **Python 3.13** installer from
+[python.org/downloads](https://www.python.org/downloads/) and run it.
+
+Either way you get a `python3.13` command. Verify:
+
+```bash
+python3.13 --version
+```
+
+Use `python3.13` (not plain `python3`) in the commands below — the Mac's
+built-in `python3` is often an old 3.9 that installs broken dependency
+versions.
 
 ### Linux
 
@@ -30,16 +41,11 @@ sudo apt install python3 python3-venv python3-pip
 sudo dnf install python3 python3-pip
 ```
 
-Check it worked (use `python3` everywhere below):
+Check it worked:
 
 ```bash
 python3 --version
 ```
-
-> **macOS gotcha:** the Mac's built-in `python3` is often 3.9, which is too
-> old and installs broken dependency versions. If `python3 --version` says
-> 3.9.x, use the Homebrew one explicitly: `$(brew --prefix)/bin/python3`
-> (or restart your terminal after `brew install python`).
 
 `pip` ships with Python — inside the virtual environment below it is always available as `.venv/bin/pip`.
 
@@ -50,7 +56,11 @@ git clone https://github.com/arnasbrad/remove-background.git
 cd remove-background
 
 # create an isolated virtual environment
-python3 -m venv .venv
+python3.13 -m venv .venv    # macOS
+python3 -m venv .venv       # Linux
+
+# make sure the venv uses a new enough Python (3.10+)
+.venv/bin/python --version
 
 # install dependencies into it
 .venv/bin/pip install "rembg[cli,cpu]" gradio
@@ -101,5 +111,5 @@ Edge modes (GUI dropdown; the CLI script uses decontaminate):
 
 - **`rembg: command not found`** — you're outside the venv; use `.venv/bin/rembg`, or `source .venv/bin/activate` first.
 - **Slow processing** — birefnet on CPU takes a few seconds per photo; try `u2net` for speed.
-- **`ImportError: cannot import name 'HfFolder'`** — your venv was created with an old Python (usually macOS system 3.9). Delete it and recreate with Python 3.10+:
-  `rm -rf .venv && $(brew --prefix)/bin/python3 -m venv .venv && .venv/bin/pip install "rembg[cli,cpu]" gradio`
+- **`ImportError: cannot import name 'HfFolder'`** — your venv was created with an old Python (usually macOS system 3.9; the error path shows `python3.9`). Install Python 3.13 (see step 1), then rebuild the venv with the versioned command:
+  `rm -rf .venv && python3.13 -m venv .venv && .venv/bin/pip install "rembg[cli,cpu]" gradio`
