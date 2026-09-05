@@ -41,7 +41,7 @@ python3 --version
 ## 2. Set up the project
 
 ```bash
-git clone git@github.com:arnasbrad/remove-background.git
+git clone https://github.com/arnasbrad/remove-background.git
 cd remove-background
 
 # create an isolated virtual environment
