@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.no-bg.png
+*_no_bg/
+out-*.png
+compare*.png
