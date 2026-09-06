@@ -95,6 +95,10 @@ Your browser opens automatically (or go to the URL it prints, usually `http://12
 MODEL=u2net ./remove-bg.sh photo.jpg      # different model
 ```
 
+## Updating
+
+Double-click `update.command` in the project folder (or run `./update.command`). It pulls the latest version from GitHub.
+
 ## Optional: a Desktop launcher (macOS)
 
 To start the GUI without opening Terminal:
