@@ -40,7 +40,7 @@ def _session(model: str):
 
 
 def _unique(path: Path) -> Path:
-    """Never overwrite: photo.no-bg.png -> photo.no-bg-2.png, -3, ..."""
+    """Never overwrite: photo.png -> photo-2.png, -3, ..."""
     candidate = path
     n = 2
     while candidate.exists():
@@ -49,7 +49,7 @@ def _unique(path: Path) -> Path:
     return candidate
 
 
-def process(files, model, edge_label, progress=gr.Progress()):
+def process(files, model, edge_label, keep_names, progress=gr.Progress()):
     if not files:
         raise gr.Error("Drop at least one photo first.")
     edge = EDGE_MODES[edge_label]
@@ -65,7 +65,8 @@ def process(files, model, edge_label, progress=gr.Progress()):
             post_process_mask=(edge == "ppm"),
             alpha_matting=(edge == "matting"),
         )
-        dst = _unique(out_dir / f"{src.stem}.no-bg.png")
+        suffix = "" if keep_names else ".no-bg"
+        dst = _unique(out_dir / f"{src.stem}{suffix}.png")
         cut.save(dst)
         results.append(str(dst))
 
@@ -93,12 +94,17 @@ with gr.Blocks(title="Background Remover") as demo:
             edge = gr.Radio(
                 list(EDGE_MODES), value=list(EDGE_MODES)[0], label="Edge mode"
             )
+            keep_names = gr.Checkbox(
+                value=True, label="Keep original file names (no .no-bg suffix)"
+            )
             run = gr.Button("Remove backgrounds", variant="primary")
         with gr.Column():
             gallery = gr.Gallery(label="Results", columns=2, object_fit="contain")
             download = gr.File(label="Download")
 
-    run.click(process, inputs=[files, model, edge], outputs=[gallery, download])
+    run.click(
+        process, inputs=[files, model, edge, keep_names], outputs=[gallery, download]
+    )
 
 if __name__ == "__main__":
     demo.launch(inbrowser=True)
